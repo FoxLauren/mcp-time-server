@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "time": {
+      "command": "/Users/e84972/.pyenv/versions/3.10.19/bin/python3",
+      "args": [
+        "/Users/e84972/projects/mcp-servers/mcp-calendar/server.py"
+      ]
+    }
+  }
+}

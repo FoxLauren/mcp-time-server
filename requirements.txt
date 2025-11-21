@@ -1,0 +1,9 @@
+# Core dependencies
+mcp>=1.0.0
+
+# Windows timezone data (only needed on Windows)
+tzdata; sys_platform == 'win32'
+
+# Development dependencies (optional)
+# Uncomment for building executables
+# pyinstaller>=6.0.0
