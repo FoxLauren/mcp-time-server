@@ -57,12 +57,32 @@ Download the latest release for your platform from the [Releases](../../releases
 3. Windows may show a security warning - click "More info" then "Run anyway" (the executable is safe, but unsigned)
 4. The executable is ready to use - no installation required!
 
-#### macOS/Linux Setup
+#### macOS Setup
 
-Make the downloaded file executable:
-```bash
-chmod +x mcp-time-server-macos  # or mcp-time-server-linux
-```
+1. Download `mcp-time-server-macos` from the releases page
+2. Save it to a permanent location (e.g., `~/mcp-servers/`)
+3. Make the file executable:
+   ```bash
+   chmod +x mcp-time-server-macos
+   ```
+4. **First time running**: macOS Gatekeeper will block the unsigned executable:
+   - Try to run the executable (or add it to Claude Desktop config and restart Claude)
+   - macOS will show "cannot be opened because the developer cannot be verified"
+   - Open **System Settings** → **Privacy & Security**
+   - Scroll down to the Security section
+   - Click **"Allow Anyway"** next to the message about `mcp-time-server-macos`
+   - Try running again - click **"Open"** when prompted
+5. The executable is now trusted and ready to use!
+
+#### Linux Setup
+
+1. Download `mcp-time-server-linux` from the releases page
+2. Save it to a permanent location (e.g., `~/mcp-servers/`)
+3. Make the file executable:
+   ```bash
+   chmod +x mcp-time-server-linux
+   ```
+4. The executable is ready to use!
 
 ### Option 2: Run from Source
 
@@ -378,6 +398,23 @@ The server uses Python's `zoneinfo` module which:
 Windows may show "Windows protected your PC" warning because the executable is unsigned:
 1. Click "More info"
 2. Click "Run anyway"
+3. This is safe - the executable is built from open source code via GitHub Actions
+
+### macOS: "Cannot be opened because the developer cannot be verified"
+
+macOS Gatekeeper blocks unsigned executables by default:
+
+1. **Method 1: Privacy & Security Settings** (Recommended)
+   - Try to run the executable (or start Claude Desktop with the server configured)
+   - Open **System Settings** → **Privacy & Security**
+   - Scroll down and click **"Allow Anyway"** next to the blocked app message
+   - Try running again and click **"Open"** when prompted
+
+2. **Method 2: Command Line**
+   ```bash
+   xattr -d com.apple.quarantine ~/path/to/mcp-time-server-macos
+   ```
+
 3. This is safe - the executable is built from open source code via GitHub Actions
 
 ### "No timezone data found"
