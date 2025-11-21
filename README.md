@@ -46,11 +46,20 @@ Convert a Unix timestamp to a readable datetime.
 
 Download the latest release for your platform from the [Releases](../../releases) page:
 
-- **Windows**: `mcp-time-server.exe`
+- **Windows**: `mcp-time-server-windows.exe`
 - **macOS**: `mcp-time-server-macos` (Apple Silicon)
 - **Linux**: `mcp-time-server-linux` (x86_64)
 
-On Unix systems (macOS/Linux), make the file executable:
+#### Windows Setup
+
+1. Download `mcp-time-server-windows.exe` from the releases page
+2. Save it to a permanent location (e.g., `C:\Users\YourName\mcp-servers\`)
+3. Windows may show a security warning - click "More info" then "Run anyway" (the executable is safe, but unsigned)
+4. The executable is ready to use - no installation required!
+
+#### macOS/Linux Setup
+
+Make the downloaded file executable:
 ```bash
 chmod +x mcp-time-server-macos  # or mcp-time-server-linux
 ```
@@ -80,30 +89,98 @@ python server.py
 
 #### As MCP Server with Claude Desktop
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+##### Windows
 
-```json
-{
-  "mcpServers": {
-    "time": {
-      "command": "python",
-      "args": ["/absolute/path/to/server.py"]
-    }
-  }
-}
-```
+1. Open your Claude Desktop config file at:
+   ```
+   %APPDATA%\Claude\claude_desktop_config.json
+   ```
+   Or navigate to: `C:\Users\YourName\AppData\Roaming\Claude\claude_desktop_config.json`
 
-Or if using the compiled executable:
+2. Add the MCP server configuration (use the full path where you saved the executable):
 
-```json
-{
-  "mcpServers": {
-    "time": {
-      "command": "/absolute/path/to/mcp-time-server"
-    }
-  }
-}
-```
+   ```json
+   {
+     "mcpServers": {
+       "time": {
+         "command": "C:\\Users\\YourName\\mcp-servers\\mcp-time-server-windows.exe"
+       }
+     }
+   }
+   ```
+
+   **Important**: Use double backslashes (`\\`) in Windows paths!
+
+3. Restart Claude Desktop completely (quit and reopen)
+4. The time server tools should now be available in Claude Desktop
+
+##### macOS
+
+1. Open your Claude Desktop config file at:
+   ```
+   ~/Library/Application Support/Claude/claude_desktop_config.json
+   ```
+
+2. Add the MCP server configuration:
+
+   **Using the executable:**
+   ```json
+   {
+     "mcpServers": {
+       "time": {
+         "command": "/absolute/path/to/mcp-time-server-macos"
+       }
+     }
+   }
+   ```
+
+   **Using Python:**
+   ```json
+   {
+     "mcpServers": {
+       "time": {
+         "command": "/usr/local/bin/python3",
+         "args": ["/absolute/path/to/server.py"]
+       }
+     }
+   }
+   ```
+
+3. Restart Claude Desktop completely (quit and reopen)
+
+##### Linux
+
+1. Open your Claude Desktop config file at:
+   ```
+   ~/.config/Claude/claude_desktop_config.json
+   ```
+
+2. Add the MCP server configuration:
+
+   **Using the executable:**
+   ```json
+   {
+     "mcpServers": {
+       "time": {
+         "command": "/absolute/path/to/mcp-time-server-linux"
+       }
+     }
+   }
+   ```
+
+   **Using Python:**
+   ```json
+   {
+     "mcpServers": {
+       "time": {
+         "command": "/usr/bin/python3",
+         "args": ["/absolute/path/to/server.py"]
+       }
+     }
+   }
+   ```
+
+3. Restart Claude Desktop completely (quit and reopen)
 
 ## Building Executables
 
@@ -281,27 +358,51 @@ The server uses Python's `zoneinfo` module which:
 
 ## Troubleshooting
 
+### Windows: MCP Server Not Connecting to Claude Desktop
+
+1. **Check the path**: Make sure you're using double backslashes (`\\`) in the JSON config:
+   ```json
+   "command": "C:\\Users\\YourName\\mcp-servers\\mcp-time-server-windows.exe"
+   ```
+
+2. **Check Windows Security**: Windows Defender or antivirus may block the executable:
+   - Right-click the `.exe` file → Properties → Check "Unblock" at the bottom → Apply
+   - Or add an exception in Windows Security for the executable
+
+3. **Verify the file path**: Make sure the path in your config exactly matches where you saved the `.exe` file
+
+4. **Check Claude Desktop logs**: Look for error messages in the Claude Desktop logs to diagnose issues
+
+### Windows: Security Warning When Running Executable
+
+Windows may show "Windows protected your PC" warning because the executable is unsigned:
+1. Click "More info"
+2. Click "Run anyway"
+3. This is safe - the executable is built from open source code via GitHub Actions
+
 ### "No timezone data found"
 
-On Windows, ensure `tzdata` is installed:
+On Windows when running from source, ensure `tzdata` is installed:
 ```bash
 pip install tzdata
 ```
 
+This is not needed for the pre-built executable (tzdata is bundled).
+
 ### Executable is too large
 
 The executable includes Python runtime and all dependencies. Typical sizes:
-- macOS: 15-20 MB
-- Linux: 10-15 MB
-- Windows: 15-20 MB
+- macOS: 40-45 MB
+- Linux: 35-40 MB
+- Windows: 40-45 MB
 
-To reduce size, you can disable UPX compression in the `.spec` file.
+To reduce size when building locally, you can disable UPX compression in the `.spec` file.
 
 ### "Permission denied" when running executable
 
 On Unix systems:
 ```bash
-chmod +x dist/mcp-time-server
+chmod +x mcp-time-server-macos  # or mcp-time-server-linux
 ```
 
 ## License
