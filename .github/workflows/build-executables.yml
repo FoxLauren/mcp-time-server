@@ -20,7 +20,7 @@ jobs:
             artifact_name: mcp-time-server-linux
             asset_name: mcp-time-server-linux-x86_64
           - os: windows-latest
-            artifact_name: mcp-time-server.exe
+            artifact_name: mcp-time-server-windows.exe
             asset_name: mcp-time-server-windows-x86_64.exe
           - os: macos-latest
             artifact_name: mcp-time-server-macos
@@ -96,7 +96,7 @@ jobs:
         with:
           files: |
             artifacts/mcp-time-server-linux-x86_64/mcp-time-server-linux
-            artifacts/mcp-time-server-windows-x86_64.exe/mcp-time-server.exe
+            artifacts/mcp-time-server-windows-x86_64.exe/mcp-time-server-windows.exe
             artifacts/mcp-time-server-macos-arm64/mcp-time-server-macos
           draft: false
           prerelease: false
